@@ -18,7 +18,7 @@ var global = this;
   var nakefile = new File(global.path + "/Nakefile");
 
   if (!nakefile.exists()) {
-    fatalError("Nakefile not found: ${global.path}");
+    fatalError("Nakefile not found in directory: ${global.path}");
   }
 
   var tasks = {};
@@ -47,22 +47,28 @@ var global = this;
   load(nakefile.getAbsolutePath());
 
 
-  if (global.arguments.length == 0) {
+  var args = $ARG;
+
+  if (args.length == 0) {
     printTasks();
     exit(0);
   }
 
-  var taskName = global.arguments[0];
+  var taskName = args[0];
+  var options = [];
+  if (args.length > 1) {
+    options = args.slice(1);
+  }
   var currentTask = tasks[taskName];
   if (!currentTask) {
     fatalError("no such task: ${taskName}\nuse 'nake' to list all available tasks");
   }
 
   try {
-    currentTask.action.call(global);
+    currentTask.action.call(global, options);
   }
   catch (e) {
-    fatalError("failed to execute task ${currentTask.name}: ${e}");
+    fatalError("execution of task ${currentTask.name} failed: ${e}");
   }
 
 })();

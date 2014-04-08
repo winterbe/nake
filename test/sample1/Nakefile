@@ -1,0 +1,26 @@
+task("task1", "prints a message", function() {
+  print("mytask1 executed");
+});
+
+task("task2", "executes 'pwd' and prints directory", function() {
+  $EXEC("pwd");
+  print("mytask2 executed in directory: ${$OUT.trim()}");
+});
+
+task("task3", "prints the path set by nake", function() {
+  print("path=${path}");
+});
+
+task("task4", "throws an error", function() {
+  throw 'task failure';
+});
+
+task("task5", "print java version", function() {
+  `java -version`
+  print($ERR);
+});
+
+task("task6", "print options", function(options) {
+  print(Object.prototype.toString.call(options));
+  print("options: ${options}");
+});
