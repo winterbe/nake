@@ -24,3 +24,9 @@ task("task6", "print options", function(options) {
   print(Object.prototype.toString.call(options));
   print("options: ${options}");
 });
+
+task("task7", "print options", function(options) {
+  var a = parseInt(options[0]);
+  var b = parseInt(options[1]);
+  print(a + b);
+});
