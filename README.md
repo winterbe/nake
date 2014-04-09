@@ -39,7 +39,7 @@ Create a file `Nakefile` in any directory with the following content:
 ```javascript
 task('hello', 'Hello World', function() {
   print('Hello World!');
-}
+};
 ```
 
 Open the terminal, cd into the directory and type `nake -- hello`.
