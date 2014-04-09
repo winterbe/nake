@@ -1,9 +1,9 @@
 Nake
 ===========
 
-Nake is a simplified version of [Make](https://www.gnu.org/software/make/) ([Cake](http://coffeescript.org/documentation/docs/cake.html), [Jake](https://github.com/280north/jake), [Rake](http://rake.rubyforge.org/)) for Java 8 which runs on the Nashorn Javascript Engine.
+Nake is a simplified version of [Make](https://www.gnu.org/software/make/) ([Cake](http://coffeescript.org/documentation/docs/cake.html), [Jake](https://github.com/280north/jake), [Rake](http://rake.rubyforge.org/)) for the Java 8 [Nashorn](http://docs.oracle.com/javase/8/docs/technotes/guides/scripting/nashorn/toc.html) Javascript Engine.
 
-You define tasks in a project specific `Nakefile` and call them from the command line. Tasks are written in Javascript executed on the Nashorn Javascript Engine, so the script runs natively on the JVM. This enables you to utilize everything from the JDK 8 API or any external Java libraries.
+You define tasks in a project specific `Nakefile` and call them from the command line. Tasks are written in Javascript and run natively on the JVM by utilizing Nashorns `jjs -scripting` command. This enables you to utilize everything from the JDK 8 API or any external Java libraries.
 
 Usage
 ===========
@@ -44,7 +44,7 @@ task('hello', 'Hello World', function() {
 
 Open the terminal, cd into the directory and type `nake -- hello`.
 
-Read my [Nashorn Tutorial](http://winterbe.com/posts/2014/04/05/java8-nashorn-tutorial/) to get started with Nashorn.
+Next, check out these [example tasks](https://github.com/winterbe/nake/blob/master/test/sample1/Nakefile). You should also consider reading my [Nashorn Tutorial](http://winterbe.com/posts/2014/04/05/java8-nashorn-tutorial/) to get started with the Nashorn engine.
 
 Contribute
 ===========
