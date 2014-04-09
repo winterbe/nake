@@ -15,7 +15,7 @@ Use `nake -- taskName [options]` to run a specific task from your Nakefile.
 Installation
 ===========
 
-Nake currently runs only on POSIX systems (Mac OSX, Linux). Windows Support might be added later on demanded.
+Nake currently runs on POSIX systems  only (Mac OSX, Linux). Please contact me if you're interested in using Nake from Windows.
 
  - Install [Java 8](http://www.oracle.com/technetwork/java/javase/overview/index.html) and make sure `$JAVA_HOME` points to your Java home directory
  - Link `jjs` to `/usr/bin` so you can use it from any directory:
