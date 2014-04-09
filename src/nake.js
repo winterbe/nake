@@ -15,10 +15,22 @@ var global = this;
 
   global.path = $OUT.trim();
 
-  var nakefile = new File(global.path + "/Nakefile");
+  var findClosestNakefile = function (path) {
+    var nakefile = new File(path + "/Nakefile");
+    if (nakefile.exists()) {
+      return nakefile;
+    }
+    var parent = new File(path).getParentFile();
+    if (!parent) {
+      return undefined;
+    }
+    return findClosestNakefile(parent.getAbsolutePath());
+  };
 
-  if (!nakefile.exists()) {
-    fatalError("Nakefile not found in directory: ${global.path}");
+  var nakefile = findClosestNakefile(global.path);
+
+  if (!nakefile) {
+    fatalError("no Nakefile found for directory: ${global.path}");
   }
 
   var tasks = {};
