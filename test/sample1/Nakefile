@@ -25,8 +25,8 @@ task("task6", "print options", function(options) {
   print("options: ${options}");
 });
 
-task("task7", "print options", function(options) {
+task("task7", "add args: a + b", function(options) {
   var a = parseInt(options[0]);
   var b = parseInt(options[1]);
-  print(a + b);
+  print("${a} + ${b} = ${a + b}");
 });
