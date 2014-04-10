@@ -12,6 +12,7 @@ task("compile", "Compile all java files", function() {
   }
 
   print("compiling ${paths.length} java files...");
+  `mkdir -p out`
   `javac -d out ${joiner}`
 
   if ($ERR) {
