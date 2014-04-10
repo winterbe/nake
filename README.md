@@ -15,7 +15,7 @@ Use `nake -- taskName [options]` to run a specific task from your Nakefile.
 Installation
 ===========
 
-Nake currently runs on POSIX systems  only (Mac OSX, Linux). Please contact me if you're interested in using Nake from Windows.
+Nake currently runs on POSIX systems  only (Mac OSX, Linux). _Please contact me if you're interested in using Nake from Windows._
 
  - Install [Java 8](http://www.oracle.com/technetwork/java/javase/overview/index.html) and make sure `$JAVA_HOME` points to your Java home directory
  - Link `jjs` to `/usr/bin` so you can use it from any directory:
@@ -34,7 +34,7 @@ $ ln -s /path/to/nake/src/nake.js nake
 Getting started
 ===========
 
-Create a file `Nakefile` in any directory with the following content:
+Create a file called `Nakefile` in your projects root directory with the following content:
 
 ```javascript
 task('hello', 'Hello World', function() {
@@ -42,9 +42,28 @@ task('hello', 'Hello World', function() {
 };
 ```
 
-Open the terminal, cd into the directory and type `nake -- hello`.
+Open the terminal, cd into any project directory and type `nake -- hello`.
 
 Next, check out these [example tasks](https://github.com/winterbe/nake/blob/master/test/sample1/Nakefile). You should also consider reading my [Nashorn Tutorial](http://winterbe.com/posts/2014/04/05/java8-nashorn-tutorial/) to get started with the Nashorn engine.
+
+Java Example
+===========
+
+The [java example](https://github.com/winterbe/nake/blob/master/test/java) found in `test/java` contains a sample java application with some basic java-related [nake tasks](https://github.com/winterbe/nake/blob/master/test/java/Nakefile):
+
+#### Compile all java files:
+
+```bash
+nake -- compile
+```
+
+#### Run the java application:
+
+```bash
+nake -- run
+```
+
+Keep in mind that you can run nake tasks from any subfolder of your project.
 
 Contribute
 ===========
