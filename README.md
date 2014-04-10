@@ -68,4 +68,4 @@ Keep in mind that you can run nake tasks from any subfolder of your project.
 Contribute
 ===========
 
-Your Feedback is highly appreciated. Feel free to ping me on [Twitter](https://twitter.com/benontherun), file an issue or send me a Pull Request.
+Your Feedback is highly appreciated. Feel free to ping me on [Twitter](https://twitter.com/benontherun) or [Google+](https://plus.google.com/105973259367211176218/posts), file an issue or send me a Pull Request.
