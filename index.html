@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Nake by winterbe</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Nake</h1>
+        <h2>A simplified Make for Java 8 Nashorn</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/winterbe/nake/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/winterbe/nake/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/winterbe/nake" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a name="nake" class="anchor" href="#nake"><span class="octicon octicon-link"></span></a>Nake</h1>
+
+<p>Nake is a simplified version of <a href="https://www.gnu.org/software/make/">Make</a> (<a href="http://coffeescript.org/documentation/docs/cake.html">Cake</a>, <a href="https://github.com/280north/jake">Jake</a>, <a href="http://rake.rubyforge.org/">Rake</a>) for the Java 8 <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/scripting/nashorn/toc.html">Nashorn</a> Javascript Engine.</p>
+
+<p>You define tasks in a project specific <code>Nakefile</code> and call them from the command line. Tasks are written in Javascript and run natively on the JVM by utilizing Nashorns <code>jjs -scripting</code> command. This enables you to utilize everything from the JDK 8 API or any external Java libraries.</p>
+
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>Running <code>nake</code> with no arguments prints all tasks in the current directory's Nakefile.</p>
+
+<p>Use <code>nake -- taskName [options]</code> to run a specific task from your Nakefile.</p>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>Nake currently runs on POSIX systems  only (Mac OSX, Linux). <em>Please contact me if you're interested in using Nake from Windows.</em></p>
+
+<ul>
+<li>Install <a href="http://www.oracle.com/technetwork/java/javase/overview/index.html">Java 8</a> and make sure <code>$JAVA_HOME</code> points to your Java home directory</li>
+<li>Link <code>jjs</code> to <code>/usr/bin</code> so you can use it from any directory:</li>
+</ul><div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd</span> /usr/bin
+<span class="nv">$ </span>ln -s <span class="nv">$JAVA_HOME</span>/bin/jjs jjs
+</pre></div>
+
+<ul>
+<li>Clone the nake repository or copy <code>src/nake.js</code> to your machine</li>
+<li>Make <code>nake.js</code> executable: <code>chmod +x /path/to/nake/src/nake.js</code>
+</li>
+<li>Link <code>src/nake.js</code> to <code>usr/bin</code> so you can use it from any directory:</li>
+</ul><div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd</span> /usr/bin
+<span class="nv">$ </span>ln -s /path/to/nake/src/nake.js nake
+</pre></div>
+
+<h1>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting started</h1>
+
+<p>Create a file called <code>Nakefile</code> in your projects root directory with the following content:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">task</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">,</span> <span class="s1">'Hello World'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s1">'Hello World!'</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>Open the terminal, cd into any project directory and type <code>nake -- hello</code>.</p>
+
+<p>Next, check out these <a href="https://github.com/winterbe/nake/blob/master/test/basic/Nakefile">example tasks</a>. You should also consider reading my <a href="http://winterbe.com/posts/2014/04/05/java8-nashorn-tutorial/">Nashorn Tutorial</a> to get started with the Nashorn engine.</p>
+
+<h1>
+<a name="java-example" class="anchor" href="#java-example"><span class="octicon octicon-link"></span></a>Java Example</h1>
+
+<p>The <a href="https://github.com/winterbe/nake/blob/master/test/java">java example</a> found in <code>test/java</code> contains a sample java application with some basic java-related <a href="https://github.com/winterbe/nake/blob/master/test/java/Nakefile">nake tasks</a>:</p>
+
+<h4>
+<a name="compile-all-java-files" class="anchor" href="#compile-all-java-files"><span class="octicon octicon-link"></span></a>Compile all java files:</h4>
+
+<div class="highlight highlight-bash"><pre>nake -- compile
+</pre></div>
+
+<h4>
+<a name="run-the-java-application" class="anchor" href="#run-the-java-application"><span class="octicon octicon-link"></span></a>Run the java application:</h4>
+
+<div class="highlight highlight-bash"><pre>nake -- run
+</pre></div>
+
+<p>Keep in mind that you can run nake tasks from any subfolder of your project.</p>
+
+<h1>
+<a name="contribute" class="anchor" href="#contribute"><span class="octicon octicon-link"></span></a>Contribute</h1>
+
+<p>Your Feedback is highly appreciated. Feel free to ping me on <a href="https://twitter.com/benontherun">Twitter</a> or <a href="https://plus.google.com/105973259367211176218/posts">Google+</a>, file an issue or send me a Pull Request.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
