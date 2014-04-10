@@ -1,0 +1,35 @@
+task("compile", "Compile all java files", function() {
+  var javaFiles = `find src -name *.java`;
+  var paths = javaFiles.trim().split("\n");
+  if (paths.length == 0) {
+    print("no java files found");
+    exit(0);
+  }
+
+  var joiner = new java.util.StringJoiner(" ");
+  for each (var path in paths) {
+    joiner.add(path);
+  }
+
+  print("compiling ${paths.length} java files...");
+  `javac -d out ${joiner}`
+
+  if ($ERR) {
+    print("[ERROR] ${$ERR}");
+    exit(1);
+  }
+  print('done');
+});
+
+task("run", "Run java application", function (options) {
+  var name = "";
+  if (options.length > 0) {
+    name = options[0];
+  }
+
+  $ENV['PWD'] = "./out";
+  print(`java com/winterbe/nake/java/Main ${options[0]}`);
+  if ($ERR) {
+    print("[ERROR] ${$ERR}");
+  }
+});
