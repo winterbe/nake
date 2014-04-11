@@ -80,4 +80,4 @@ Keep in mind that you can run nake tasks from any subfolder of your project.
 Contribute
 ===========
 
-Your Feedback is highly appreciated. Feel free to file an issue or ping me on [Twitter](https://twitter.com/benontherun) or [Google+](https://plus.google.com/105973259367211176218/posts).
+Your Feedback is highly appreciated. Feel free to file an [issue](https://github.com/winterbe/nake/issues/new) or ping me on [Twitter](https://twitter.com/benontherun) or [Google+](https://plus.google.com/105973259367211176218/posts).
