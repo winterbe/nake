@@ -1,3 +1,36 @@
+task("watch", "Watch and recompile java files", function () {
+  var Paths = Java.type("java.nio.file.Paths");
+  var Files = Java.type("java.nio.file.Files");
+  var FileSystems = Java.type("java.nio.file.FileSystems");
+  var SimpleFileVisitor = Java.type("java.nio.file.SimpleFileVisitor");
+  var FileVisitResult = Java.type("java.nio.file.FileVisitResult");
+  var Events = Java.type("java.nio.file.StandardWatchEventKinds");
+
+  var src = Paths.get(path + "/src");
+  var watcher = FileSystems.getDefault().newWatchService();
+  var Visitor = Java.extend(SimpleFileVisitor);
+  Files.walkFileTree(src, new Visitor() {
+    preVisitDirectory: function (dir) {
+      dir.register(watcher, Events.ENTRY_CREATE, Events.ENTRY_DELETE, Events.ENTRY_MODIFY);
+      return FileVisitResult.CONTINUE;
+    }
+  });
+
+  print("watching ${src} for recompile...");
+
+  while (true) {
+    var watchKey = watcher.take();
+    var events = watchKey.pollEvents();
+    for each (var event in events) {
+      var changedPath = event.context();
+      if (String(changedPath).indexOf(".java") > -1) {
+        run('compile');
+      }
+    }
+    watchKey.reset();
+  }
+});
+
 task("compile", "Compile all java files", function() {
   var javaFiles = `find src -name *.java`;
   var paths = javaFiles.trim().split("\n");
@@ -11,15 +44,13 @@ task("compile", "Compile all java files", function() {
     joiner.add(path);
   }
 
-  print("compiling ${paths.length} java files...");
+  print("  - compiling ${paths.length} java files...");
   `mkdir -p out`
   `javac -d out ${joiner}`
 
   if ($ERR) {
     print("[ERROR] ${$ERR}");
-    exit(1);
   }
-  print('done');
 });
 
 task("run", "Run java application", function (options) {

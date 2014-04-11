@@ -10,10 +10,7 @@ var global = this;
     exit(1);
   };
 
-
-  $EXEC("pwd");
-
-  global.path = $OUT.trim();
+  global.path = $ENV['PWD'];
 
   var findClosestNakefile = function (path) {
     var nakefile = new File(path + "/Nakefile");
@@ -44,6 +41,22 @@ var global = this;
   };
 
   global.task = task;
+
+
+  var run = function (name, options) {
+    var currentTask = tasks[name];
+    if (!currentTask) {
+      fatalError("no such task: ${taskName}\nuse 'nake' to list all available tasks");
+    }
+    try {
+      currentTask.action.call(global, options);
+    }
+    catch (e) {
+      fatalError("execution of task ${currentTask.name} failed: ${e}");
+    }
+  };
+
+  global.run = run;
 
   var printTasks = function() {
     print("Tasks defined in ${global.path}/Nakefile:");
