@@ -53,17 +53,23 @@ The [java example](https://github.com/winterbe/nake/blob/master/test/java) found
 
 #### Run the java application:
 
+Invokes the java main method. Nake arguments will be passed to java.
+
 ```bash
-nake -- run
+nake -- run [arg]
 ```
 
 #### Compile all java files:
+
+Compiles all java files from `/src` to `/out`.
 
 ```bash
 nake -- compile
 ```
 
 #### Watch for changes and automatically recompile java files:
+
+Recursively watches for changes to java files in `/src` and recompile all java files to `out`.
 
 ```bash
 nake -- watch
