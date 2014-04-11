@@ -51,16 +51,22 @@ Java Example
 
 The [java example](https://github.com/winterbe/nake/blob/master/test/java) found in `test/java` contains a sample java application with some basic java-related [nake tasks](https://github.com/winterbe/nake/blob/master/test/java/Nakefile):
 
+#### Run the java application:
+
+```bash
+nake -- run
+```
+
 #### Compile all java files:
 
 ```bash
 nake -- compile
 ```
 
-#### Run the java application:
+#### Watch for changes and automatically recompile java files:
 
 ```bash
-nake -- run
+nake -- watch
 ```
 
 Keep in mind that you can run nake tasks from any subfolder of your project.
@@ -68,4 +74,4 @@ Keep in mind that you can run nake tasks from any subfolder of your project.
 Contribute
 ===========
 
-Your Feedback is highly appreciated. Feel free to ping me on [Twitter](https://twitter.com/benontherun) or [Google+](https://plus.google.com/105973259367211176218/posts), file an issue or send me a Pull Request.
+Your Feedback is highly appreciated. Feel free to file and issue or ping me on [Twitter](https://twitter.com/benontherun) or [Google+](https://plus.google.com/105973259367211176218/posts).
