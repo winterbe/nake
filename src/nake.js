@@ -59,12 +59,24 @@ var global = this;
   global.run = run;
 
   var printTasks = function() {
-    print("Tasks defined in ${global.path}/Nakefile:");
+    print("Tasks defined in ${global.path}/Nakefile\n");
+    var length = 0;
     for (var taskName in tasks) {
-      var task = tasks[taskName];
-      print(" - ${task.name} [${task.description}]");
+      if (taskName.length() > length) {
+        length = taskName.length();
+      }
     }
-    print("\nuse 'nake -- taskName' to execute a task");
+
+    for each (var task in tasks) {
+      var name = task.name;
+      while (name.length() < length) {
+        name += " ";
+      }
+      var line = "   ${name}   ${task.description}";
+      print(line);
+    }
+
+    print("\nuse 'nake -- taskName' to run a specific task");
   };
 
 
