@@ -32,25 +32,24 @@ task("watch", "Watch and recompile java files", function () {
 });
 
 task("compile", "Compile all java files", function() {
-  var javaFiles = `find src -name *.java`;
-  var paths = javaFiles.trim().split("\n");
+  var src = "src";  // root dir of .java files
+  var out = "out";  // root dir of .class files
+
+  var found = $EXEC("find ${src} -name *.java");
+  var paths = found.trim().split("\n");
   if (paths.length == 0) {
     print("no java files found");
     exit(0);
   }
 
-  var joiner = new java.util.StringJoiner(" ");
-  for each (var path in paths) {
-    joiner.add(path);
-  }
+  var join = java.lang.String.join(" ", paths);
 
-  print("  - compiling ${paths.length} java files...");
-  `mkdir -p out`
-  `javac -d out ${joiner}`
+  print("  - compiling ${paths.length} java files to dir: ${out}");
 
-  if ($ERR) {
-    print("[ERROR] ${$ERR}");
-  }
+  $EXEC("mkdir -p ${out}");
+  $EXEC("javac -d ${out} ${join}");
+
+  if ($ERR) print("[ERROR] ${$ERR}");
 });
 
 task("run", "Run java application", function (options) {
