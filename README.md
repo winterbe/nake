@@ -15,7 +15,7 @@ Use `nake -- taskName [options]` to run a specific task from your Nakefile.
 Installation
 ===========
 
-Nake currently runs on POSIX systems  only (Mac OSX, Linux). _Please contact me if you're interested in using Nake from Windows._
+Use the following steps to install Nake on POSIX systems (Mac OSX, Linux):
 
  - Install [Java 8](http://www.oracle.com/technetwork/java/javase/overview/index.html) and make sure `$JAVA_HOME` points to your Java home directory
  - Link `jjs` to `/usr/bin` so you can use it from any directory:
@@ -30,6 +30,8 @@ $ ln -s $JAVA_HOME/bin/jjs jjs
 $ cd /usr/bin
 $ ln -s /path/to/nake/src/nake.js nake
 ```
+
+_Nake also runs on Windows: Set PATH to `nake.js` directory; then run Nake with `jjs -scripting nake.js -- taskName`._
 
 Getting started
 ===========
