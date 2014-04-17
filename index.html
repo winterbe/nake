@@ -1,32 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
     <title>Nake by winterbe</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
+
+    <header>
+      <div class="container">
         <h1>Nake</h1>
-        <p>A simplified Make for Java 8 Nashorn</p>
-        <p class="view"><a href="https://github.com/winterbe/nake">View the Project on GitHub <small>winterbe/nake</small></a></p>
-        <ul>
-          <li><a href="https://github.com/winterbe/nake/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/winterbe/nake/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/winterbe/nake">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+        <h2>A simplified Make for Java 8 Nashorn</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/winterbe/nake/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/winterbe/nake/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/winterbe/nake" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
         <h1>
 <a name="nake" class="anchor" href="#nake"><span class="octicon octicon-link"></span></a>Nake</h1>
 
@@ -44,7 +45,7 @@
 <h1>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
 
-<p>Nake currently runs on POSIX systems  only (Mac OSX, Linux). <em>Please contact me if you're interested in using Nake from Windows.</em></p>
+<p>Use the following steps to install Nake on POSIX systems (Mac OSX, Linux):</p>
 
 <ul>
 <li>Install <a href="http://www.oracle.com/technetwork/java/javase/overview/index.html">Java 8</a> and make sure <code>$JAVA_HOME</code> points to your Java home directory</li>
@@ -61,6 +62,8 @@
 </ul><div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd</span> /usr/bin
 <span class="nv">$ </span>ln -s /path/to/nake/src/nake.js nake
 </pre></div>
+
+<p><em>Nake also runs on Windows: Set PATH to <code>nake.js</code> directory; then run Nake with <code>jjs -scripting nake.js -- taskName</code>.</em></p>
 
 <h1>
 <a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting started</h1>
@@ -113,11 +116,7 @@
 <p>Your Feedback is highly appreciated. Feel free to file an <a href="https://github.com/winterbe/nake/issues/new">issue</a> or ping me on <a href="https://twitter.com/benontherun">Twitter</a> or <a href="https://plus.google.com/105973259367211176218/posts">Google+</a>.</p>
       </section>
     </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/winterbe">winterbe</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
     
   </body>
 </html>
