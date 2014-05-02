@@ -1,0 +1,104 @@
+task("basic", "test exec/pipe/print", function() {
+  shell(".")
+    .exec("ls")
+    .print()
+    .dir("folder1")
+    .exec("ls")
+    .print()
+    .exec("echo Hi there!")
+    .pipe("cat")
+    .print();
+});
+
+task("exec-fn", "test exec with function", function () {
+  shell()
+    .exec("ls -al")
+    .exec(function (result) {
+      print("executing function with result:");
+      print(result.trim());
+    })
+    .print("DONE");
+});
+
+task("dir", "test change dir", function () {
+  shell()
+    .exec("pwd")
+    .print()
+    .dir("folder1/subfolder1")
+    .exec("pwd")
+    .print()
+    .dir("folder1/subfolder1/..")
+    .exec("pwd")
+    .print();
+});
+
+task("readLine", "test readLine", function() {
+  shell()
+    .readLine("Who's there?")
+    .print();
+});
+
+task("eachLine", "test eachLine", function() {
+  shell()
+    .exec("ls -al")
+    .eachLine(function(line, i) {
+      print("${i}: ${line}");
+    })
+    .print("DONE");
+});
+
+task("stash", "test stash/pipe", function() {
+  shell()
+    .exec("ls -al")
+    .stash("mykey")
+    .exec("ls")
+    .pipe("cat", "mykey")
+    .print();
+});
+
+task("unstash", "test stash/unstash", function() {
+  shell()
+    .exec("ls -al")
+    .stash("mykey")
+    .exec("ls")
+    .unstash("mykey")
+    .pipe("cat")
+    .print();
+});
+
+task("result", "test return of result", function () {
+  var result =
+    shell()
+      .exec("ls -al")
+      .result();
+
+  print(result);
+});
+
+task("result-stashed", "test return of stashed result", function () {
+  var result =
+    shell()
+      .exec("ls -al")
+      .stash("mylist")
+      .exec("ls")
+      .result("mylist");
+  print(result);
+});
+
+task("cli", "test cli entry-point", function() {
+  shell()
+    .exec("ls -al")
+    .print();
+});
+
+task("exec", "test exec entry-point", function() {
+  shell()
+    .exec("ls -al")
+    .print();
+});
+
+task("error", "test serr", function () {
+  shell()
+    .exec("java -version")
+    .print("not reachable");
+});
