@@ -32,35 +32,22 @@ task("watch", "Watch and recompile java files", function () {
 });
 
 task("compile", "Compile all java files", function() {
-  var src = "src";  // root dir of .java files
-  var out = "out";  // root dir of .class files
+  var files = shell()
+    .exec("find src -name *.java")
+    .apply(function(result) {
+      var paths = result.split("\n");
+      return java.lang.String.join(" ", paths);
+    })
+    .get();
 
-  var found = $EXEC("find ${src} -name *.java");
-  var paths = found.trim().split("\n");
-  if (paths.length == 0) {
-    print("no java files found");
-    exit(0);
-  }
-
-  var join = java.lang.String.join(" ", paths);
-
-  print("  - compiling ${paths.length} java files to dir: ${out}");
-
-  $EXEC("mkdir -p ${out}");
-  $EXEC("javac -d ${out} ${join}");
-
-  if ($ERR) print("[ERROR] ${$ERR}");
+  shell()
+    .print("compiling java files...")
+    .exec("mkdir -p out")
+    .exec("javac -d out ${files}");
 });
 
-task("run", "Run java application", function (options) {
-  var name = "";
-  if (options.length > 0) {
-    name = options[0];
-  }
-
-  $ENV['PWD'] = "./out";
-  print(`java com/winterbe/nake/java/Main ${options[0]}`);
-  if ($ERR) {
-    print("[ERROR] ${$ERR}");
-  }
+task("run", "Run java application", function(options) {
+  shell("out")
+    .exec("java com/winterbe/nake/java/Main ${options[0]}")
+    .print();
 });
