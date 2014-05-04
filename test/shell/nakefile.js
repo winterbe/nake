@@ -52,9 +52,9 @@ task("dir2", "test change .. dir", function() {
     .print();
 });
 
-task("readLine", "test readLine", function() {
+task("prompt", "test prompt", function() {
   shell()
-    .readLine("Who's there?")
+    .prompt("Who's there?")
     .print();
 });
 

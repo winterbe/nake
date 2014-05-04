@@ -48,12 +48,8 @@ var global = this;
       }
     };
 
-    this.stash = function(key, val) {
-      if (val === undefined) {
-        this.outs[key] = this.out;
-      } else {
-        this.outs[key] = val;
-      }
+    this.stash = function(key) {
+      this.outs[key] = this.out;
       return this;
     };
 
@@ -109,7 +105,7 @@ var global = this;
       return this;
     };
 
-    this.readLine = function(msg) {
+    this.prompt = function(msg) {
       this.out = readLine("${msg} ");
       return this;
     };
@@ -154,12 +150,19 @@ var global = this;
   };
 
 
+  var validFileNames = ["Nakefile", "nakefile", "Nakefile.js", "nakefile.js"];
+  var nakefileName;
+
   // find nearest Nakefile for current directory
   var findClosestNakefile = function (path) {
-    var nakefile = new File(path + "/Nakefile");
-    if (nakefile.exists()) {
-      return nakefile;
+    for each (var name in validFileNames) {
+      var nakefile = new File(path + File.separator + name);
+      if (nakefile.exists()) {
+        nakefileName = name;
+        return nakefile;
+      }
     }
+
     var parent = new File(path).getParentFile();
     if (!parent) {
       return undefined;
@@ -211,7 +214,7 @@ var global = this;
 
 
   var printTasks = function() {
-    print("Tasks defined in ${global.path}/Nakefile\n");
+    print("Tasks defined in ${global.projectDir}/${nakefileName}\n");
     var length = 0;
     for (var taskName in tasks) {
       if (taskName.length() > length) {
