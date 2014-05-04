@@ -126,6 +126,21 @@ task("apply-stashed", "test apply stashed", function () {
     .print();
 });
 
+task("set", "test set", function () {
+  shell()
+    .exec("ls -al")
+    .set("abc")
+    .print();
+});
+
+task("set-key", "test set with key", function () {
+  shell()
+    .set("mykey", "BAM")
+    .exec("ls -al")
+    .unstash("mykey")
+    .print();
+});
+
 task("error", "test serr", function () {
   shell()
     .exec("java -version")

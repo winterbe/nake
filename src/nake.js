@@ -22,7 +22,7 @@ var global = this;
       $ENV["PWD"] = this.pwd;
 
       if (typeof cmd == "function") {
-        cmd.call(this, this.out, this.pwd);
+        cmd.call(this, this.out);
         return this;
       }
 
@@ -119,7 +119,23 @@ var global = this;
         return this.outs[key].trim();
       }
       return this.out.trim();
-    }
+    };
+
+    this.set = function() {
+      if (!arguments.length) {
+        return this;
+      }
+
+      if (arguments.length == 2) {
+        var key = arguments[0];
+        var val = arguments[1];
+        this.outs[key] = val;
+        return this;
+      }
+
+      this.out = arguments[0];
+      return this;
+    };
 
     if (dir) {
       this.dir(dir);
