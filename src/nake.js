@@ -48,8 +48,12 @@ var global = this;
       }
     };
 
-    this.stash = function(key) {
-      this.outs[key] = this.out;
+    this.stash = function(key, val) {
+      if (val === undefined) {
+        this.outs[key] = this.out;
+      } else {
+        this.outs[key] = val;
+      }
       return this;
     };
 
@@ -87,11 +91,20 @@ var global = this;
       return this;
     };
 
-    this.print = function(msg) {
-      if (msg) {
-        print(msg);
+    this.apply = function(fn, key) {
+      if (key === undefined) {
+        this.out = fn.call(this, this.out);
       } else {
+        this.outs[key] = fn.call(this, this.outs[key]);
+      }
+      return this;
+    };
+
+    this.print = function(msg) {
+      if (msg === undefined) {
         print(this.get());
+      } else {
+        print(msg);
       }
       return this;
     };

@@ -105,15 +105,24 @@ task("result-stashed", "test return of stashed result", function () {
   print(result);
 });
 
-task("cli", "test cli entry-point", function() {
+task("apply", "test apply", function () {
   shell()
     .exec("ls -al")
+    .apply(function (val) {
+      return val.toUpperCase();
+    })
     .print();
 });
 
-task("exec", "test exec entry-point", function() {
+task("apply-stashed", "test apply stashed", function () {
   shell()
+    .exec("ls")
+    .stash("mylist")
     .exec("ls -al")
+    .apply(function (val) {
+      return java.lang.String.join(" ", val.split("\n"));
+    }, "mylist")
+    .unstash("mylist")
     .print();
 });
 
