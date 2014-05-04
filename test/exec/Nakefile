@@ -24,10 +24,30 @@ task("dir", "test change dir", function () {
   shell()
     .exec("pwd")
     .print()
-    .dir("folder1/subfolder1")
+    .dir("folder1")
     .exec("pwd")
     .print()
-    .dir("folder1/subfolder1/..")
+    .dir("subfolder1")
+    .exec("pwd")
+    .dir("/usr/local")
+    .exec("pwd")
+    .print();
+});
+
+task("dir2", "test change .. dir", function() {
+  shell("folder1/subfolder1")
+    .exec("pwd")
+    .print()
+    .dir("..")
+    .exec("pwd")
+    .print()
+    .dir("../folder1/subfolder1")
+    .exec("pwd")
+    .print()
+    .dir("../..")
+    .exec("pwd")
+    .print()
+    .dir("folder1/../folder1/subfolder1")
     .exec("pwd")
     .print();
 });
@@ -70,7 +90,7 @@ task("result", "test return of result", function () {
   var result =
     shell()
       .exec("ls -al")
-      .result();
+      .get();
 
   print(result);
 });
@@ -81,7 +101,7 @@ task("result-stashed", "test return of stashed result", function () {
       .exec("ls -al")
       .stash("mylist")
       .exec("ls")
-      .result("mylist");
+      .get("mylist");
   print(result);
 });
 

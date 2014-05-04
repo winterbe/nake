@@ -8,17 +8,17 @@ var global = this;
 // local scope for nake internal stuff
 (function() {
 
+  var File = Java.type("java.io.File");
+
+
   // adds support for chaining cli-based operations
   var ShellContext = function(dir) {
-    this.pwd = $ENV["PWD"];
+    this.pwd = global.projectDir;
     this.cmd = "";
-    this.err = "";
     this.out = "";
     this.outs = {};
 
     this.exec = function(cmd, input) {
-      this.checkError();
-
       $ENV["PWD"] = this.pwd;
 
       if (typeof cmd == "function") {
@@ -32,13 +32,15 @@ var global = this;
         this.out = $EXEC(cmd);
       }
 
-      this.err = $ERR;
+      if ($ERR) {
+        throw "failed to execute command '${this.cmd}'\n${$ERR}";
+      }
+
       this.cmd = cmd;
       return this;
     };
 
     this.pipe = function(cmd, key) {
-      this.checkError();
       if (key) {
         return this.exec(cmd, this.outs[key]);
       } else {
@@ -47,25 +49,35 @@ var global = this;
     };
 
     this.stash = function(key) {
-      this.checkError();
       this.outs[key] = this.out;
       return this;
     };
 
     this.unstash = function(key) {
-      this.checkError();
       this.out = this.outs[key];
       return this;
     };
 
     this.dir = function(dir) {
-      this.checkError();
-      this.pwd = dir;
+      if (dir.indexOf(File.separator) == 0) {
+        this.pwd = dir;
+        return this;
+      }
+
+      var pathTokens = dir.split(File.separator);
+      for each (var token in pathTokens) {
+        if (token == "..") {
+          var idx = this.pwd.lastIndexOf(File.separator);
+          this.pwd = this.pwd.slice(0, idx);
+        } else {
+          this.pwd = this.pwd + File.separator + token;
+        }
+      }
+
       return this;
     };
 
     this.eachLine = function(fn) {
-      this.checkError();
       var lines = this.out.trim().split("\n");
       var i = 0;
       for each (var line in lines) {
@@ -76,34 +88,25 @@ var global = this;
     };
 
     this.print = function(msg) {
-      this.checkError();
       if (msg) {
         print(msg);
       } else {
-        print(this.result());
+        print(this.get());
       }
       return this;
     };
 
     this.readLine = function(msg) {
-      this.checkError();
       this.out = readLine("${msg} ");
       return this;
     };
 
-    this.result = function(key) {
-      this.checkError();
+    this.get = function(key) {
       if (key) {
         return this.outs[key].trim();
       }
       return this.out.trim();
     }
-
-    this.checkError = function() {
-      if (this.err) {
-        throw "failed to execute command '${this.cmd}'\n${$ERR}";
-      }
-    };
 
     if (dir) {
       this.dir(dir);
@@ -115,15 +118,12 @@ var global = this;
   };
 
 
-  var File = Java.type("java.io.File");
-
-  var fatalError = function (message) {
+  var fatalError = function (message, e) {
     print(message);
+    if (e) e.printStackTrace();
     exit(1);
   };
 
-
-  global.path = $ENV['PWD'];
 
   // find nearest Nakefile for current directory
   var findClosestNakefile = function (path) {
@@ -138,11 +138,14 @@ var global = this;
     return findClosestNakefile(parent.getAbsolutePath());
   };
 
-  var nakefile = findClosestNakefile(global.path);
+  var nakefile = findClosestNakefile($ENV['PWD']);
 
   if (!nakefile) {
     fatalError("no Nakefile found for directory: ${global.path}");
   }
+
+  global.projectDir = nakefile.getParent();
+  global.currentDir = $ENV['PWD'];
 
 
   var tasks = {};
@@ -227,7 +230,7 @@ var global = this;
     global.description = currentTask.description;
     currentTask.action.call(global, taskArgs);
   } catch (e) {
-    fatalError("Task '${currentTask.name}' failed: ${e}");
+    fatalError("Task '${currentTask.name}' failed: ${e}", e);
   }
 
 })();
