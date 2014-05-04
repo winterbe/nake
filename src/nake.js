@@ -170,7 +170,7 @@ var global = this;
   var nakefile = findClosestNakefile($ENV['PWD']);
 
   if (!nakefile) {
-    fatalError("no Nakefile found for directory: ${global.path}");
+    fatalError("no Nakefile found for directory: ${$ENV['PWD']}");
   }
 
   global.projectDir = nakefile.getParent();
