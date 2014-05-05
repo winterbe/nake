@@ -32,18 +32,17 @@ task("watch", "Watch and recompile java files", function () {
 });
 
 task("compile", "Compile all java files", function() {
-  var files = shell()
+  shell()
     .exec("find src -name *.java")
     .apply(function(result) {
       var paths = result.split("\n");
       return java.lang.String.join(" ", paths);
     })
-    .get();
-
-  shell()
+    .stash("files")
     .print("compiling java files...")
     .exec("mkdir -p out")
-    .exec("javac -d out ${files}");
+    .exec("javac -d out {{files}}")
+    .print("done");
 });
 
 task("run", "Run java application", function(options) {

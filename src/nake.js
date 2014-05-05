@@ -11,12 +11,32 @@ var global = this;
   var File = Java.type("java.io.File");
 
 
-  // adds support for chaining cli-based operations
+
+
+
+  // shell api adds support for chaining cli-based operations
   var Shell = function(dir) {
     this.pwd = global.projectDir;
     this.cmd = "";
     this.out = "";
     this.stashed = {};
+
+
+    // interpolate stashed values with pattern: {{key}}
+    var interpolate = function(text) {
+      if (text.contains("{{")) {
+        var matches = text.match(interpolate.PATTERN);
+        for each (var match in matches) {
+          var key = match.replace("{{", "").replace("}}", "");
+          var val = this.stashed[key];
+          text = text.replace("{{" + key + "}}", val);
+        }
+      }
+      return text;
+    };
+
+    interpolate.PATTERN = /\{\{(.+?)\}\}/g;
+
 
     this.exec = function(cmd, input) {
       $ENV["PWD"] = this.pwd;
@@ -25,6 +45,8 @@ var global = this;
         cmd.call(this, this.out);
         return this;
       }
+
+      cmd = interpolate.call(this, cmd);
 
       if (input) {
         this.out = $EXEC(cmd, input);
@@ -100,12 +122,14 @@ var global = this;
       if (msg === undefined) {
         print(this.get());
       } else {
+        msg = interpolate.call(this, msg);
         print(msg);
       }
       return this;
     };
 
     this.prompt = function(msg) {
+      msg = interpolate.call(this, msg);
       this.out = readLine("${msg} ");
       return this;
     };

@@ -20,6 +20,13 @@ task("exec-fn", "test exec with function", function () {
     .print("DONE");
 });
 
+task("exec-interpolate", "cmd interpolation", function () {
+  shell()
+    .set("text", "Hi there!")
+    .exec("echo {{text}}")
+    .print();
+});
+
 task("dir", "test change dir", function () {
   shell()
     .exec("pwd")
@@ -56,6 +63,14 @@ task("prompt", "test prompt", function() {
   shell()
     .prompt("Who's there?")
     .print();
+});
+
+task("interpolate", "test prompt/print interpolation", function() {
+  shell()
+    .set("foo", "who")
+    .prompt("Who's {{foo}}?")
+    .stash("res")
+    .print("Hi {{res}}!");
 });
 
 task("eachLine", "test eachLine", function() {
