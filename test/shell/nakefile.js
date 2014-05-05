@@ -156,8 +156,8 @@ task("set-key", "test set with key", function () {
     .print();
 });
 
-task("error", "test serr", function () {
+task("error", "test print stderr", function () {
   shell()
-    .exec("java -version")
-    .print("not reachable");
+    .printErrors()
+    .exec("java -version");
 });

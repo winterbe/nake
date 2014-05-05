@@ -20,6 +20,7 @@ var global = this;
     this.cmd = "";
     this.out = "";
     this.stashed = {};
+    this.printErr = false;
 
 
     // interpolate stashed values with pattern: {{key}}
@@ -54,8 +55,12 @@ var global = this;
         this.out = $EXEC(cmd);
       }
 
-      if ($ERR) {
-        throw "failed to execute command '${this.cmd}'\n${$ERR}";
+      if (this.printErr && $ERR) {
+        print($ERR.trim());
+      }
+
+      if ($EXIT > 0) {
+        throw "failed to execute command '${this.cmd}' (EXIT ${$EXIT})";
       }
 
       this.cmd = cmd;
@@ -131,6 +136,11 @@ var global = this;
     this.prompt = function(msg) {
       msg = interpolate.call(this, msg);
       this.out = readLine("${msg} ");
+      return this;
+    };
+
+    this.printErrors = function(printErrors) {
+      this.printErr = printErrors === undefined || !!(printErrors);
       return this;
     };
 
