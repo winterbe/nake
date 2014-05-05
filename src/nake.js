@@ -17,7 +17,6 @@ var global = this;
   // shell api adds support for chaining cli-based operations
   var Shell = function(dir) {
     this.pwd = global.projectDir;
-    this.cmd = "";
     this.out = "";
     this.stashed = {};
     this.printErr = false;
@@ -29,14 +28,18 @@ var global = this;
         var matches = text.match(interpolate.PATTERN);
         for each (var match in matches) {
           var key = match.replace("{{", "").replace("}}", "");
-          var val = this.stashed[key];
-          text = text.replace("{{" + key + "}}", val);
+          if (key) {
+            var val = this.stashed[key];
+            text = text.replace(match, val);
+          } else {
+            text = text.replace(match, this.out.trim());
+          }
         }
       }
       return text;
     };
 
-    interpolate.PATTERN = /\{\{(.+?)\}\}/g;
+    interpolate.PATTERN = /\{\{(.*?)\}\}/g;
 
 
     this.exec = function(cmd, input) {
@@ -60,10 +63,9 @@ var global = this;
       }
 
       if ($EXIT > 0) {
-        throw "failed to execute command '${this.cmd}' (EXIT ${$EXIT})";
+        throw "failed to execute command '${cmd}' (EXIT=${$EXIT})";
       }
 
-      this.cmd = cmd;
       return this;
     };
 

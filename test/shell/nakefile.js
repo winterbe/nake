@@ -73,6 +73,19 @@ task("interpolate", "test prompt/print interpolation", function() {
     .print("Hi {{res}}!");
 });
 
+task("interpolate-default", "test interpolate default value", function () {
+  shell()
+    .set("wat")
+    .print("wait {{}}");
+});
+
+task("interpolate-multiple", "test interpolate multiple values", function () {
+  shell()
+    .set("bang")
+    .set("bang", "boom")
+    .print("{{}} - {{bang}} - {{}}");
+});
+
 task("eachLine", "test eachLine", function() {
   shell()
     .exec("ls -al")
@@ -156,7 +169,7 @@ task("set-key", "test set with key", function () {
     .print();
 });
 
-task("error", "test print stderr", function () {
+task("print-err", "test print stderr", function () {
   shell()
     .printErrors()
     .exec("java -version");
