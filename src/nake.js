@@ -12,11 +12,11 @@ var global = this;
 
 
   // adds support for chaining cli-based operations
-  var ShellContext = function(dir) {
+  var Shell = function(dir) {
     this.pwd = global.projectDir;
     this.cmd = "";
     this.out = "";
-    this.outs = {};
+    this.stashed = {};
 
     this.exec = function(cmd, input) {
       $ENV["PWD"] = this.pwd;
@@ -42,19 +42,19 @@ var global = this;
 
     this.pipe = function(cmd, key) {
       if (key) {
-        return this.exec(cmd, this.outs[key]);
+        return this.exec(cmd, this.stashed[key]);
       } else {
         return this.exec(cmd, this.out);
       }
     };
 
     this.stash = function(key) {
-      this.outs[key] = this.out;
+      this.stashed[key] = this.out;
       return this;
     };
 
     this.unstash = function(key) {
-      this.out = this.outs[key];
+      this.out = this.stashed[key];
       return this;
     };
 
@@ -91,7 +91,7 @@ var global = this;
       if (key === undefined) {
         this.out = fn.call(this, this.out);
       } else {
-        this.outs[key] = fn.call(this, this.outs[key]);
+        this.stashed[key] = fn.call(this, this.stashed[key]);
       }
       return this;
     };
@@ -112,7 +112,7 @@ var global = this;
 
     this.get = function(key) {
       if (key) {
-        return this.outs[key].trim();
+        return this.stashed[key].trim();
       }
       return this.out.trim();
     };
@@ -125,7 +125,7 @@ var global = this;
       if (arguments.length == 2) {
         var key = arguments[0];
         var val = arguments[1];
-        this.outs[key] = val;
+        this.stashed[key] = val;
         return this;
       }
 
@@ -139,7 +139,7 @@ var global = this;
   };
 
   global.shell = function(dir) {
-    return new ShellContext(dir);
+    return new Shell(dir);
   };
 
 
