@@ -196,15 +196,13 @@ var global = this;
   };
 
 
-  var validFileNames = ["Nakefile", "nakefile", "Nakefile.js", "nakefile.js"];
-  var nakefileName;
+  var validFileNames = ["nakefile.js", "Nakefile.js", "nakefile", "Nakefile"];
 
   // find nearest Nakefile for current directory
   var findClosestNakefile = function (path) {
     for each (var name in validFileNames) {
       var nakefile = new File(path + File.separator + name);
       if (nakefile.exists()) {
-        nakefileName = name;
         return nakefile;
       }
     }
@@ -260,7 +258,7 @@ var global = this;
 
 
   var printTasks = function() {
-    print("Tasks defined in ${global.projectDir}/${nakefileName}\n");
+    print("Tasks defined in ${nakefile.getAbsolutePath()}\n");
     var length = 0;
     for (var taskName in tasks) {
       if (taskName.length() > length) {
