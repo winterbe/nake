@@ -169,8 +169,22 @@ task("set-key", "test set with key", function () {
     .print();
 });
 
-task("print-err", "test print stderr", function () {
+task("showErr", "test show stderr", function () {
   shell()
-    .printErrors()
+    .showErr()
     .exec("java -version");
+});
+
+task("stashErr1", "test stash stderr as default value", function () {
+  shell()
+    .exec("java -version")
+    .stashErr()
+    .print();
+});
+
+task("stashErr2", "test stash stderr with key", function () {
+  shell()
+    .exec("java -version")
+    .stashErr("javaVersion")
+    .print("Result of key=javaVersion:\n{{javaVersion}}");
 });

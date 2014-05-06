@@ -11,15 +11,13 @@ var global = this;
   var File = Java.type("java.io.File");
 
 
-
-
-
   // shell api adds support for chaining cli-based operations
   var Shell = function(dir) {
-    this.pwd = global.projectDir;
     this.out = "";
+    this.err = "";
     this.stashed = {};
-    this.printErr = false;
+    this.pwd = global.projectDir;
+    this.showErrors = false;
 
 
     // interpolate stashed values with pattern: {{key}}
@@ -32,7 +30,7 @@ var global = this;
             var val = this.stashed[key];
             text = text.replace(match, val);
           } else {
-            text = text.replace(match, this.out.trim());
+            text = text.replace(match, this.out);
           }
         }
       }
@@ -53,13 +51,16 @@ var global = this;
       cmd = interpolate.call(this, cmd);
 
       if (input) {
-        this.out = $EXEC(cmd, input);
+        $EXEC(cmd, input);
       } else {
-        this.out = $EXEC(cmd);
+        $EXEC(cmd);
       }
 
-      if (this.printErr && $ERR) {
-        print($ERR.trim());
+      this.out = $OUT.trim();
+      this.err = $ERR.trim();
+
+      if (this.showErrors && this.err) {
+        print(this.err);
       }
 
       if ($EXIT > 0) {
@@ -107,7 +108,7 @@ var global = this;
     };
 
     this.eachLine = function(fn) {
-      var lines = this.out.trim().split("\n");
+      var lines = this.out.split("\n");
       var i = 0;
       for each (var line in lines) {
         fn.call(this, line, i);
@@ -141,16 +142,25 @@ var global = this;
       return this;
     };
 
-    this.printErrors = function(printErrors) {
-      this.printErr = printErrors === undefined || !!(printErrors);
+    this.showErr = function(showErrors) {
+      this.showErrors = showErrors === undefined || !!(showErrors);
+      return this;
+    };
+
+    this.stashErr = function(key) {
+      if (key === undefined) {
+        this.out = this.err;
+      } else {
+        this.stashed[key] = this.err;
+      }
       return this;
     };
 
     this.get = function(key) {
       if (key) {
-        return this.stashed[key].trim();
+        return this.stashed[key];
       }
-      return this.out.trim();
+      return this.out;
     };
 
     this.set = function() {
