@@ -97,7 +97,7 @@ Run the task from your terminal:
 nake -- compile
 ```
 
-Keep in mind that you can run nake tasks from any subfolder of your project.
+Keep in mind that you can run nake tasks from any subfolder of your project. Read the [API Documentation](https://github.com/winterbe/nake/wiki) for a detailed description.
 
 Contribute
 ===========
