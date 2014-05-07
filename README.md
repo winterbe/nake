@@ -46,9 +46,7 @@ task('hello', 'Hello World', function() {
 
 Open the terminal, cd into any project directory and type `nake -- hello`.
 
-Next, check out these [example tasks](https://github.com/winterbe/nake/blob/master/test/basic/Nakefile). You should also consider reading my [Nashorn Tutorial](http://winterbe.com/posts/2014/04/05/java8-nashorn-tutorial/) to get started with the Nashorn engine.
-
-Don't forget to read the [API Documentation](https://github.com/winterbe/nake/wiki).
+Next, check out the [API Documentation](https://github.com/winterbe/nake/wiki) and [example tasks](https://github.com/winterbe/nake/blob/master/test/basic/Nakefile). You should also consider reading my [Nashorn Tutorial](http://winterbe.com/posts/2014/04/05/java8-nashorn-tutorial/) to get started with the Nashorn engine.
 
 Examples
 ===========
