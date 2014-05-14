@@ -6,7 +6,7 @@ task("watch", "Watch and recompile java files", function () {
   var FileVisitResult = Java.type("java.nio.file.FileVisitResult");
   var Events = Java.type("java.nio.file.StandardWatchEventKinds");
 
-  var src = Paths.get(path + "/src");
+  var src = Paths.get(projectDir + "/src");
   var watcher = FileSystems.getDefault().newWatchService();
   var Visitor = Java.extend(SimpleFileVisitor);
   Files.walkFileTree(src, new Visitor() {
@@ -23,6 +23,7 @@ task("watch", "Watch and recompile java files", function () {
     var events = watchKey.pollEvents();
     for each (var event in events) {
       var changedPath = event.context();
+      print("changedPath=${changedPath}");
       if (String(changedPath).indexOf(".java") > -1) {
         run('compile');
       }

@@ -189,6 +189,78 @@ var global = this;
   };
 
 
+
+
+  var Paths = Java.type("java.nio.file.Paths");
+  var Files = Java.type("java.nio.file.Files");
+  var FileSystems = Java.type("java.nio.file.FileSystems");
+  var SimpleFileVisitor = Java.type("java.nio.file.SimpleFileVisitor");
+  var FileVisitResult = Java.type("java.nio.file.FileVisitResult");
+  var Events = Java.type("java.nio.file.StandardWatchEventKinds");
+
+  var Watcher = function (dir) {
+    var watchDir = dir;
+    if (watchDir == undefined) {
+      watchDir = projectDir;
+    }
+    if (watchDir.indexOf(File.separator) != 0) {
+      watchDir = projectDir + File.separator + watchDir;
+    }
+
+    var path = Paths.get(watchDir);
+    var watcher = FileSystems.getDefault().newWatchService();
+    var Visitor = Java.extend(SimpleFileVisitor);
+    Files.walkFileTree(path, new Visitor() {
+      preVisitDirectory: function (dir) {
+        dir.register(watcher,
+          Events.ENTRY_CREATE, Events.ENTRY_DELETE, Events.ENTRY_MODIFY);
+        return FileVisitResult.CONTINUE;
+      }
+    });
+
+    var eventHandlers = {
+      change: [],
+      create: [],
+      modify: [],
+      delete: []
+    };
+
+    var invokeHandler = function (changedPath) {
+      eventHandlers['change'].forEach(function (fn) {
+        fn.call(global, changedPath);
+      });
+    };
+
+    this.on = function (eventType, fn) {
+      if (eventHandlers.hasOwnProperty(eventType)) {
+        eventHandlers[eventType].push(fn);
+      } else {
+        throw "eventType '${eventType}' not supported";
+      }
+      return this;
+    };
+
+    this.start = function () {
+      print("start watching...");
+      while (true) {
+        var watchKey = watcher.take();
+        var events = watchKey.pollEvents();
+        for each (var event in events) {
+          var changedPath = event.context();
+          invokeHandler(changedPath);
+        }
+        watchKey.reset();
+      }
+    };
+  };
+
+  global.watch = function (dir) {
+    return new Watcher(dir);
+  };
+
+
+
+
   var fatalError = function (message, e) {
     print(message);
     if (e) e.printStackTrace();
