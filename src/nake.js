@@ -207,16 +207,25 @@ var global = this;
       watchDir = projectDir + File.separator + watchDir;
     }
 
-    var path = Paths.get(watchDir);
+    var watchPath = Paths.get(watchDir);
     var watcher = FileSystems.getDefault().newWatchService();
     var Visitor = Java.extend(SimpleFileVisitor);
-    Files.walkFileTree(path, new Visitor() {
-      preVisitDirectory: function (dir) {
-        dir.register(watcher,
-          Events.ENTRY_CREATE, Events.ENTRY_DELETE, Events.ENTRY_MODIFY);
-        return FileVisitResult.CONTINUE;
-      }
-    });
+    var watchKeys = {};
+
+    var registerAll = function (dir) {
+      Files.walkFileTree(watchPath, new Visitor() {
+        preVisitDirectory: function (dir) {
+          var key = dir.register(watcher,
+            Events.ENTRY_CREATE,
+            Events.ENTRY_DELETE, 
+            Events.ENTRY_MODIFY);
+          watchKeys[key] = dir;
+          return FileVisitResult.CONTINUE;
+        }
+      });
+    };
+
+    registerAll(watchPath);
 
     var eventHandlers = {
       change: [],
@@ -225,31 +234,64 @@ var global = this;
       delete: []
     };
 
-    var invokeHandler = function (changedPath) {
+    var invokeHandler = function (ev) {
+      eventHandlers[ev.type].forEach(function (fn) {
+        fn.call(global, ev);
+      });
       eventHandlers['change'].forEach(function (fn) {
-        fn.call(global, changedPath);
+        fn.call(global, ev);
       });
     };
 
     this.on = function (eventType, fn) {
       if (eventHandlers.hasOwnProperty(eventType)) {
         eventHandlers[eventType].push(fn);
-      } else {
-        throw "eventType '${eventType}' not supported";
+        return this;
       }
-      return this;
+      throw "eventType '${eventType}' not supported";
     };
 
     this.start = function () {
-      print("start watching...");
+      print("start watching: ${watchDir}");
       while (true) {
         var watchKey = watcher.take();
+        var dir = watchKeys[watchKey];
+        if (!dir) {
+          print("watch key not recognized: ${watchKey}");
+          continue;
+        }
+
         var events = watchKey.pollEvents();
         for each (var event in events) {
-          var changedPath = event.context();
-          invokeHandler(changedPath);
+          var kind = event.kind().name();
+          if (kind == 'OVERFLOW') {
+            print("warn: overflow triggered by underlying watcher");
+            continue;
+          }
+
+          var eventType = kind.toLowerCase().replace("entry_", "");
+          var name = event.context();
+          var child = dir.resolve(name);
+          var isDirectory = Files.isDirectory(child);
+
+          if (isDirectory && eventType == 'modify') {
+            continue;
+          }
+
+          if (isDirectory && eventType == 'create') {
+            registerAll(child);
+          }
+
+          invokeHandler({path: child, type: eventType});
         }
-        watchKey.reset();
+
+        var valid = watchKey.reset();
+        if (!valid) {
+          delete watchKeys[watchKey];
+          if (Object.keys(watchKeys) == 0) {
+            break;
+          }
+        }
       }
     };
   };
