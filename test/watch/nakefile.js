@@ -6,6 +6,14 @@ task("watch", "test file watcher", function () {
     .start();
 });
 
+task("watchPattern", "test file watcher with pattern matching", function () {
+  watch()
+    .on('change', '*.js', function (ev) {
+      print(".js file ${ev.type}: path=${ev.path}");
+    })
+    .start();
+});
+
 task("watchTypes", "test different event types", function () {
   watch()
     .on('create', function (ev) {

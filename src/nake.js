@@ -217,7 +217,7 @@ var global = this;
         preVisitDirectory: function (dir) {
           var key = dir.register(watcher,
             Events.ENTRY_CREATE,
-            Events.ENTRY_DELETE, 
+            Events.ENTRY_DELETE,
             Events.ENTRY_MODIFY);
           watchKeys[key] = dir;
           return FileVisitResult.CONTINUE;
@@ -234,7 +234,7 @@ var global = this;
       delete: []
     };
 
-    var invokeHandler = function (ev) {
+    var invokeAllHandlers = function (ev) {
       eventHandlers[ev.type].forEach(function (fn) {
         fn.call(global, ev);
       });
@@ -243,12 +243,29 @@ var global = this;
       });
     };
 
-    this.on = function (eventType, fn) {
-      if (eventHandlers.hasOwnProperty(eventType)) {
-        eventHandlers[eventType].push(fn);
-        return this;
+    this.on = function () {
+      if (arguments.length < 2 || arguments.length > 3) {
+        throw "wrong number of arguments: ${arguments.length}";
       }
-      throw "eventType '${eventType}' not supported";
+
+      var eventType = arguments[0];
+
+      if (!eventHandlers.hasOwnProperty(eventType)) {
+        throw "eventType '${eventType}' not supported";
+      }
+
+      var fn = arguments[arguments.length - 1];
+      var pattern = arguments.length == 3 ? arguments[1] : '*';
+
+      eventHandlers[eventType].push(function (ev) {
+        if (pattern == "*") {
+          fn.call(this, ev);
+        } else {
+          throw new Error("pattern matching not implemented yet: ${pattern}");
+        }
+      });
+
+      return this;
     };
 
     this.start = function () {
@@ -282,7 +299,7 @@ var global = this;
             registerAll(child);
           }
 
-          invokeHandler({path: child, type: eventType});
+          invokeAllHandlers({path: child, type: eventType});
         }
 
         var valid = watchKey.reset();
