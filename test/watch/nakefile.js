@@ -6,9 +6,9 @@ task("watch", "test file watcher", function () {
     .start();
 });
 
-task("watchPattern", "test file watcher with pattern matching", function () {
+task("watchPattern", "test file watcher with pattern matching", function (options) {
   watch()
-    .on('change', '*.js', function (ev) {
+    .on('change', options[0], function (ev) {
       print(".js file ${ev.type}: path=${ev.path}");
     })
     .start();

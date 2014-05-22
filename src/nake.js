@@ -257,12 +257,30 @@ var global = this;
       var fn = arguments[arguments.length - 1];
       var pattern = arguments.length == 3 ? arguments[1] : '*';
 
+      //print(arguments[1]);
+
       eventHandlers[eventType].push(function (ev) {
         if (pattern == "*") {
-          fn.call(this, ev);
-        } else {
-          throw new Error("pattern matching not implemented yet: ${pattern}");
+          fn.call(global, ev);
+          return;
         }
+
+        var regexPattern = pattern
+          .replace(".", "\\.")
+          .replace("*", ".*");
+
+        regexPattern = "^.*" + regexPattern + "$";
+
+        var path = String(ev.path);
+
+        //print("pattern: " + pattern);
+        //print("regexPattern: " + regexPattern);
+
+        var regex = new RegExp(regexPattern, "i");
+        if (regex.test(path)) {
+          fn.call(global, ev);
+        }
+
       });
 
       return this;
