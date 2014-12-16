@@ -29,107 +29,104 @@
       </header>
       <section>
         <h1>
-<a name="nake" class="anchor" href="#nake"><span class="octicon octicon-link"></span></a>Nake</h1>
+<a id="nake" class="anchor" href="#nake" aria-hidden="true"><span class="octicon octicon-link"></span></a>Nake</h1>
 
 <p>Nake is a simplified version of <a href="https://www.gnu.org/software/make/">Make</a> (<a href="http://coffeescript.org/documentation/docs/cake.html">Cake</a>, <a href="https://github.com/280north/jake">Jake</a>, <a href="http://rake.rubyforge.org/">Rake</a>) for the Java 8 <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/scripting/nashorn/toc.html">Nashorn</a> Javascript Engine.</p>
 
 <p>You define tasks in a project specific <code>nakefile.js</code> and call them from the command line. Tasks are written in Javascript and run natively on the JVM by utilizing Nashorns <code>jjs -scripting</code> command. This enables you to utilize everything from the JDK 8 API or any external Java libraries.</p>
 
 <h1>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h1>
 
 <p>Running <code>nake</code> with no arguments prints all tasks in the current directory's Nakefile.</p>
 
 <p>Use <code>nake -- taskName [options]</code> to run a specific task from your Nakefile.</p>
 
 <h1>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
 
 <p>Use the following steps to install Nake on POSIX systems (Mac OSX, Linux):</p>
 
 <ul>
 <li>Install <a href="http://www.oracle.com/technetwork/java/javase/overview/index.html">Java 8</a> and make sure <code>$JAVA_HOME</code> points to your Java home directory</li>
 <li>Link <code>jjs</code> to <code>/usr/bin</code> so you can use it from any directory:</li>
-</ul><div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd</span> /usr/bin
-<span class="nv">$ </span>ln -s <span class="nv">$JAVA_HOME</span>/bin/jjs jjs
-</pre></div>
+</ul>
+
+<div class="highlight highlight-bash"><pre>$ <span class="pl-s3">cd</span> /usr/bin
+$ ln -s <span class="pl-vo">$JAVA_HOME</span>/bin/jjs jjs</pre></div>
 
 <ul>
 <li>Clone the nake repository or copy <code>src/nake.js</code> to your machine</li>
 <li>Make <code>nake.js</code> executable: <code>chmod +x /path/to/nake/src/nake.js</code>
 </li>
 <li>Link <code>src/nake.js</code> to <code>usr/bin</code> so you can use it from any directory:</li>
-</ul><div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd</span> /usr/bin
-<span class="nv">$ </span>ln -s /path/to/nake/src/nake.js nake
-</pre></div>
+</ul>
+
+<div class="highlight highlight-bash"><pre>$ <span class="pl-s3">cd</span> /usr/bin
+$ ln -s /path/to/nake/src/nake.js nake</pre></div>
 
 <p><em>Nake also runs on Windows: Set PATH to <code>nake.js</code> directory; then run Nake with <code>jjs -scripting nake.js -- taskName</code>.</em></p>
 
 <h1>
-<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting started</h1>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting started</h1>
 
 <p>Create a file called <code>nakefile.js</code> in your projects root directory with the following content:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="nx">task</span><span class="p">(</span><span class="s1">'hello'</span><span class="p">,</span> <span class="s1">'Hello World'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">print</span><span class="p">(</span><span class="s1">'Hello World!'</span><span class="p">);</span>
-<span class="p">};</span>
-</pre></div>
+<div class="highlight highlight-javascript"><pre>task(<span class="pl-s1"><span class="pl-pds">'</span>hello<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">'</span>Hello World<span class="pl-pds">'</span></span>, <span class="pl-st">function</span>() {
+  <span class="pl-s3">print</span>(<span class="pl-s1"><span class="pl-pds">'</span>Hello World!<span class="pl-pds">'</span></span>);
+};</pre></div>
 
 <p>Open the terminal, cd into any project directory and type <code>nake -- hello</code>.</p>
 
 <p>Next, check out the <a href="https://github.com/winterbe/nake/wiki">API Documentation</a> and <a href="https://github.com/winterbe/nake/blob/master/test/basic/Nakefile">example tasks</a>. You should also consider reading my <a href="http://winterbe.com/posts/2014/04/05/java8-nashorn-tutorial/">Nashorn Tutorial</a> to get started with the Nashorn engine.</p>
 
 <h1>
-<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h1>
 
 <p>The <a href="https://github.com/winterbe/nake/blob/master/test/java">java example</a> found in <code>test/java</code> contains a sample java application with some basic java-related <a href="https://github.com/winterbe/nake/blob/master/test/java/nakefile.js">nake tasks</a>:</p>
 
 <h4>
-<a name="run-the-java-application" class="anchor" href="#run-the-java-application"><span class="octicon octicon-link"></span></a>Run the java application:</h4>
+<a id="run-the-java-application" class="anchor" href="#run-the-java-application" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run the java application:</h4>
 
 <p>Invokes the java main method. Nake arguments will be passed to java.</p>
 
-<div class="highlight highlight-java"><pre><span class="n">task</span><span class="o">(</span><span class="s">"run"</span><span class="o">,</span> <span class="s">"Run java application"</span><span class="o">,</span> <span class="n">function</span><span class="o">(</span><span class="n">options</span><span class="o">)</span> <span class="o">{</span>
-  <span class="n">shell</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">dir</span><span class="o">(</span><span class="s">"out"</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">exec</span><span class="o">(</span><span class="s">"java com/winterbe/nake/java/Main ${options[0]}"</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">print</span><span class="o">();</span>
-<span class="o">});</span>
-</pre></div>
+<div class="highlight highlight-java"><pre>task(<span class="pl-s1"><span class="pl-pds">"</span>run<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>Run java application<span class="pl-pds">"</span></span>, function(options) {
+  shell()
+    .dir(<span class="pl-s1"><span class="pl-pds">"</span>out<span class="pl-pds">"</span></span>)
+    .exec(<span class="pl-s1"><span class="pl-pds">"</span>java com/winterbe/nake/java/Main ${options[0]}<span class="pl-pds">"</span></span>)
+    .print();
+});</pre></div>
 
 <p>Run the task from your terminal:</p>
 
-<div class="highlight highlight-bash"><pre>nake -- run <span class="o">[</span>arg<span class="o">]</span>
-</pre></div>
+<div class="highlight highlight-bash"><pre>nake -- run [arg]</pre></div>
 
 <h4>
-<a name="compile-all-java-files" class="anchor" href="#compile-all-java-files"><span class="octicon octicon-link"></span></a>Compile all java files:</h4>
+<a id="compile-all-java-files" class="anchor" href="#compile-all-java-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compile all java files:</h4>
 
 <p>Compiles all java files from <code>src</code> to <code>out</code>.</p>
 
-<div class="highlight highlight-js"><pre><span class="nx">task</span><span class="p">(</span><span class="s2">"compile"</span><span class="p">,</span> <span class="s2">"Compile all java files"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">shell</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="s2">"find src -name *.java"</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">java</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nb">String</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="nx">result</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">"\n"</span><span class="p">));</span>
-    <span class="p">})</span>
-    <span class="p">.</span><span class="nx">stash</span><span class="p">(</span><span class="s2">"files"</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">print</span><span class="p">(</span><span class="s2">"compiling java files..."</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="s2">"mkdir -p out"</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="s2">"javac -d out {{files}}"</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">print</span><span class="p">(</span><span class="s2">"done"</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
+<div class="highlight highlight-js"><pre>task(<span class="pl-s1"><span class="pl-pds">"</span>compile<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>Compile all java files<span class="pl-pds">"</span></span>, <span class="pl-st">function</span>() {
+  shell()
+    .<span class="pl-s3">exec</span>(<span class="pl-s1"><span class="pl-pds">"</span>find src -name *.java<span class="pl-pds">"</span></span>)
+    .<span class="pl-s3">apply</span>(<span class="pl-st">function</span>(<span class="pl-vpf">result</span>) {
+      <span class="pl-k">return</span> <span class="pl-s3">java</span>.<span class="pl-sc">lang</span>.<span class="pl-s3">String</span>.<span class="pl-s3">join</span>(<span class="pl-s1"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>, result.<span class="pl-s3">split</span>(<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-cce">\n</span><span class="pl-pds">"</span></span>));
+    })
+    .stash(<span class="pl-s1"><span class="pl-pds">"</span>files<span class="pl-pds">"</span></span>)
+    .<span class="pl-s3">print</span>(<span class="pl-s1"><span class="pl-pds">"</span>compiling java files...<span class="pl-pds">"</span></span>)
+    .<span class="pl-s3">exec</span>(<span class="pl-s1"><span class="pl-pds">"</span>mkdir -p out<span class="pl-pds">"</span></span>)
+    .<span class="pl-s3">exec</span>(<span class="pl-s1"><span class="pl-pds">"</span>javac -d out {{files}}<span class="pl-pds">"</span></span>)
+    .<span class="pl-s3">print</span>(<span class="pl-s1"><span class="pl-pds">"</span>done<span class="pl-pds">"</span></span>);
+});</pre></div>
 
 <p>Run the task from your terminal:</p>
 
-<div class="highlight highlight-bash"><pre>nake -- compile
-</pre></div>
+<div class="highlight highlight-bash"><pre>nake -- compile</pre></div>
 
 <p>Keep in mind that you can run nake tasks from any subfolder of your project. Read the <a href="https://github.com/winterbe/nake/wiki">API Documentation</a> for a detailed description.</p>
 
 <h1>
-<a name="contribute" class="anchor" href="#contribute"><span class="octicon octicon-link"></span></a>Contribute</h1>
+<a id="contribute" class="anchor" href="#contribute" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contribute</h1>
 
 <p>Your Feedback is highly appreciated. Feel free to file an <a href="https://github.com/winterbe/nake/issues/new">issue</a> or ping me on <a href="https://twitter.com/benontherun">Twitter</a> or <a href="https://plus.google.com/105973259367211176218/posts">Google+</a>.</p>
       </section>
@@ -139,6 +136,16 @@
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-48569937-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
