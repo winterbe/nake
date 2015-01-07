@@ -22,6 +22,7 @@ var global = this;
 
     // interpolate stashed values with pattern: {{key}}
     var interpolate = function(text) {
+      text = String(text);
       if (text.contains("{{")) {
         var matches = text.match(interpolate.PATTERN);
         for each (var match in matches) {
