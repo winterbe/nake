@@ -41,7 +41,7 @@ Create a file called `nakefile.js` in your projects root directory with the foll
 ```javascript
 task('hello', 'Hello World', function() {
   print('Hello World!');
-};
+});
 ```
 
 Open the terminal, cd into any project directory and type `nake -- hello`.
